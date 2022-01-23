@@ -1,5 +1,8 @@
 # Getting Started with Create React App
 
+
+Check the output of the project through this link https://sayak-mallick.github.io/Todo-list-light/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
