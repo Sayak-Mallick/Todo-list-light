@@ -9,4 +9,4 @@ class TodosModel(Base):
   description = Column(String, nullable=True)
   is_completed = Column(Boolean, nullable=False, default=False)
   created_at = Column(DateTime, nullable=False, server_default=text("now()"))
-  user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+  user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)

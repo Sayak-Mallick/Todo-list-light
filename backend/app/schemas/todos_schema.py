@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
@@ -19,3 +20,4 @@ class TodoResponse(BaseModel):
     title: str
     description: str | None
     is_completed: bool
+    created_at: datetime
