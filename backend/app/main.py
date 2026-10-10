@@ -1,23 +1,22 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db, engine, Base
 from app.schemas.todos_schema import TodoCreate, TodoResponse
+from app.models.todos_model import TodosModel
+from app.models.users_model import UsersModel
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
-
-todos = [{
-    "task1": "get up early in the morning",
-    "task2": "finish last day tasks",
-    "task3": "get a cupof coffee",
-}]
-
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
-
-@app.get("/todos")
-def get_all_todos():
-    return {"data": todos}
+@app.get("/todos", response_model=list[TodoResponse])
+def get_all_todos(db: Session = Depends(get_db)):
+    todos = db.query(TodosModel).all()
+    return todos
 
 @app.post("/todos", status_code=status.HTTP_201_CREATED, response_model=TodoResponse)
 def create_todo(new_todo: TodoCreate):
