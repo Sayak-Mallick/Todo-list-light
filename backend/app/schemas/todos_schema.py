@@ -12,6 +12,9 @@ class TodoUpdate(BaseModel):
     description: str | None = None
     is_completed: bool | None = None
 
+class TodoUpdateStatus(BaseModel):
+    is_completed: bool | None
+
 
 class TodoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True) # this line is used to
