@@ -34,9 +34,10 @@ def get_single_todo(id: int, db: Session = Depends(get_db)):
 
 @router.delete("/{id}")
 def delete_todo(id: int, db: Session = Depends(get_db)):
-    todo = db.query(TodosModel).filter(TodosModel.id == id).delete(synchronize_session=False)
+    todo = db.query(TodosModel).filter(TodosModel.id == id).first()
     if not todo:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Todo with id {id} not found")
+    db.delete(todo)
     db.commit()
     return {"message": "Todo deleted successfully!"}
 
@@ -45,9 +46,8 @@ def update_todo(id: int, todo_data: TodoUpdate, db: Session = Depends(get_db)):
     todo = db.query(TodosModel).filter(TodosModel.id == id).first()
     if todo is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Todo with id {id} not found")
-    todo.title = todo_data.title
-    todo.description = todo_data.description
-    todo.is_completed = todo_data.is_completed
+    for key, value in todo_data.dict().items():
+        setattr(todo, key, value)
     db.commit()
     db.refresh(todo)
     return todo
