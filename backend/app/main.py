@@ -1,16 +1,16 @@
 from fastapi import FastAPI
-
-from app.core.database import engine, Base
-from app.routes.todo_routes import router as todo_router
-from app.routes.user_routes import router as user_router
-from app.routes.auth_routes import router as auth_router
+from app.db.database import Base, engine
+from app.routers import auth, todos
 
 Base.metadata.create_all(bind=engine)
-app = FastAPI()
-app.include_router(todo_router)
-app.include_router(user_router)
-app.include_router(auth_router)
+"""Create all tables stored in this metadata. 
+   Conditional by default, will not attempt to recreate tables already present in the target database.
+"""
+app = FastAPI(title="Todo API")
+app.include_router(auth.router)
+app.include_router(todos.router)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+
+@app.get("/", tags=["health"])
+def root():
+    return {"status": "ok"}
