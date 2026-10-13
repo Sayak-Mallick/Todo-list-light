@@ -3,9 +3,12 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
 
-url = settings.DATABASE_URL
+engine = create_engine(         # Connect to the database.
+    settings.database_url,
+    pool_size= settings.database_pool_size,
+    max_overflow = settings.database_max_overflow
+)
 
-engine = create_engine(url) # Connect to the database.
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) # Create database sessions.
 Base = declarative_base() # Base class for all database models.
 
