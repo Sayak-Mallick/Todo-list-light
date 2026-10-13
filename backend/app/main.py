@@ -1,15 +1,10 @@
 from fastapi import FastAPI
+from app.api.router import api_router
 from app.db.database import Base, engine
-from app.routers import auth, todos
 
-Base.metadata.create_all(bind=engine)
-"""Create all tables stored in this metadata. 
-   Conditional by default, will not attempt to recreate tables already present in the target database.
-"""
+Base.metadata.create_all(bind=engine) # Create database tables if they do not already exist
 app = FastAPI(title="Todo API")
-app.include_router(auth.router)
-app.include_router(todos.router)
-
+app.include_router(api_router)
 
 @app.get("/", tags=["health"])
 def root():

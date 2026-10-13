@@ -8,7 +8,7 @@ from app.deps import get_current_user
 from app.models.user import User
 from app.schemas.user import Token, UserCreate, UserOut
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter()
 
 
 @router.post("/signup", response_model=UserOut, status_code=201)

@@ -8,7 +8,7 @@ from app.models.todo import Todo
 from app.models.user import User
 from app.schemas.todo import TodoCreate, TodoResponse, TodoUpdate, TodoStatusUpdate
 
-router = APIRouter(prefix="/todos", tags=["todos"])
+router = APIRouter()
 
 @router.post("/", response_model=TodoResponse, status_code=status.HTTP_201_CREATED)
 def create_todo(data: TodoCreate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
